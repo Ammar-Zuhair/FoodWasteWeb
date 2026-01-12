@@ -4,8 +4,8 @@
 
 // Detect if running in native app (Capacitor)
 // Use Capacitor.isNativePlatform() for accurate detection
-const isNative = typeof window !== 'undefined' && 
-  window.Capacitor !== undefined && 
+const isNative = typeof window !== 'undefined' &&
+  window.Capacitor !== undefined &&
   typeof window.Capacitor.isNativePlatform === 'function' &&
   window.Capacitor.isNativePlatform();
 
@@ -29,7 +29,7 @@ function getApiBaseUrl() {
   if (import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL;
   }
-  
+
   if (isNative) {
     // محاولة الحصول على IP من localStorage إذا كان موجوداً
     let savedIP = null;
@@ -38,20 +38,20 @@ function getApiBaseUrl() {
     } catch (e) {
       // localStorage غير متاح
     }
-    
+
     const defaultIP = savedIP || POSSIBLE_IPS[0];
-    
+
     // Only show warning once, and only in development
     if (import.meta.env.DEV && !window.__API_WARNING_SHOWN) {
       console.info('ℹ️ Native app detected. Using default IP:', defaultIP);
       console.info('💡 To customize, create .env.local with: VITE_API_URL=http://YOUR_IP:8000');
       window.__API_WARNING_SHOWN = true;
     }
-    
+
     return `http://${defaultIP}:8000`;
   }
-  
-  return 'http://srv1265534.hstgr.cloud:8000';
+
+  return 'https://srv1265534.hstgr.cloud';
 }
 
 /**
@@ -60,16 +60,16 @@ function getApiBaseUrl() {
  * @returns {Promise<boolean>} true إذا كان الاتصال ناجحاً
  */
 export async function testConnection(ip) {
-  const url = `http://${ip}:8000/health/`;
+  const url = `https://srv1265534.hstgr.cloud/health/`;
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 ثواني
-    
+
     const response = await fetch(url, {
       method: 'GET',
       signal: controller.signal,
     });
-    
+
     clearTimeout(timeoutId);
     return response.ok;
   } catch (error) {
@@ -91,7 +91,7 @@ export async function findWorkingIP() {
   } catch (e) {
     // تجاهل الأخطاء
   }
-  
+
   // جرب جميع IPs في القائمة
   for (const ip of POSSIBLE_IPS) {
     if (await testConnection(ip)) {
@@ -104,7 +104,7 @@ export async function findWorkingIP() {
       return ip;
     }
   }
-  
+
   return null;
 }
 
@@ -112,13 +112,13 @@ function getLlamaUrl() {
   if (import.meta.env.VITE_LLAMA_URL) {
     return import.meta.env.VITE_LLAMA_URL;
   }
-  
+
   if (isNative) {
     const apiUrl = getApiBaseUrl();
     return apiUrl.replace(':8000', ':8001');
   }
-  
-  return 'http://srv1265534.hstgr.cloud:8001';
+
+  return 'https://srv1265534.hstgr.cloud';
 }
 
 export const API_CONFIG = {

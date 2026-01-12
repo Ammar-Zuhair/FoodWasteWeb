@@ -74,7 +74,7 @@ function FacilitiesManagement() {
 
   const loadGovernoratesFromAPI = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://srv1265534.hstgr.cloud:8000'}/api/v1/data/governorates`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://srv1265534.hstgr.cloud'}/api/v1/data/governorates`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },

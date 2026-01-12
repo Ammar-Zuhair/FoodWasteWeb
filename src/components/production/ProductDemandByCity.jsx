@@ -23,7 +23,7 @@ function ProductDemandByCity() {
   const fetchRecommendations = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://srv1265534.hstgr.cloud:8000/api/production/recommendations');
+      const response = await fetch('https://srv1265534.hstgr.cloud/api/production/recommendations');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -46,7 +46,7 @@ function ProductDemandByCity() {
 
       // توليد التوصيات لتاريخ اليوم
       const today = new Date().toISOString().split('T')[0];
-      const response = await fetch(`http://srv1265534.hstgr.cloud:8000/api/production/recommendations/generate?target_date=${today}`, {
+      const response = await fetch(`https://srv1265534.hstgr.cloud/api/production/recommendations/generate?target_date=${today}`, {
         method: 'POST',
       });
 

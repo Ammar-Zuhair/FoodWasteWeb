@@ -22,7 +22,7 @@ function LoginPage({ onLogin, onBack }) {
   const [customIP, setCustomIP] = useState("");
   const [isTestingIP, setIsTestingIP] = useState(false);
   const [currentIP, setCurrentIP] = useState("");
-//hello
+  //hello
   // Initialize StatusBar for mobile
   useEffect(() => {
     if (isNativeDevice) {
@@ -96,12 +96,12 @@ function LoginPage({ onLogin, onBack }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Login form submitted");
-    
+
     if (!username || !password) {
       setError(t("pleaseEnterCredentials") || "يرجى إدخال اسم المستخدم وكلمة المرور");
       return;
     }
-    
+
     console.log("Starting login process...");
     setError("");
     setIsLoading(true);
@@ -110,7 +110,7 @@ function LoginPage({ onLogin, onBack }) {
       console.log("Calling login API...");
       const response = await login(username, password);
       console.log("Login API response received:", response);
-      
+
       // Map role to display format
       const roleMap = {
         "ADMIN": "ADMIN",
@@ -142,7 +142,7 @@ function LoginPage({ onLogin, onBack }) {
         branch_id: response.user.branch_id,
         branch_name: response.user.branch_name,
       };
-      
+
       // Save full user data to localStorage
       if (typeof window !== 'undefined' && window.localStorage) {
         localStorage.setItem('user', JSON.stringify(fullUserData));
@@ -166,15 +166,15 @@ function LoginPage({ onLogin, onBack }) {
       };
 
       console.log("Login successful, user:", user);
-      
+
       // Update user state first
       if (onLogin) {
         console.log("Calling onLogin callback");
         onLogin(user);
       }
-      
+
       setIsLoading(false);
-      
+
       // Navigate using React Router (no page reload)
       setTimeout(() => {
         console.log("Navigating to dashboard");
@@ -187,7 +187,7 @@ function LoginPage({ onLogin, onBack }) {
         stack: err.stack,
         name: err.name
       });
-      
+
       // Show user-friendly error message
       let errorMessage = "اسم المستخدم أو كلمة المرور غير صحيحة";
       if (err.message.includes("Failed to fetch") || err.message.includes("ERR_FAILED") || err.message.includes("لا يمكن الاتصال")) {
@@ -202,7 +202,7 @@ function LoginPage({ onLogin, onBack }) {
       } else if (err.message) {
         errorMessage = err.message;
       }
-      
+
       setError(errorMessage);
       setIsLoading(false);
     }
@@ -242,16 +242,16 @@ function LoginPage({ onLogin, onBack }) {
       >
         {/* Safe Area Top Cover - Status Bar Area */}
         {isNativeDevice && (
-          <div 
-            className="absolute top-0 left-0 right-0 z-50" 
-            style={{ 
+          <div
+            className="absolute top-0 left-0 right-0 z-50"
+            style={{
               height: 'env(safe-area-inset-top)',
               minHeight: 'env(safe-area-inset-top)',
               backgroundColor: theme === "dark" ? '#0f172a' : '#ffffff'
-            }} 
+            }}
           />
         )}
-        
+
         {/* Background Effects - Subtle for mobile */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className={`absolute top-0 right-0 w-64 h-64 ${theme === "dark" ? "bg-emerald-500/5" : "bg-[#429EBD]/5"} rounded-full blur-3xl`} />
@@ -290,7 +290,7 @@ function LoginPage({ onLogin, onBack }) {
               >
                 {showIPSettings ? "إخفاء إعدادات الاتصال" : "إعدادات الاتصال"}
               </button>
-              
+
               {showIPSettings && (
                 <div className={`p-3 rounded-xl border ${theme === "dark" ? "bg-slate-800/50 border-slate-700" : "bg-[#9FE7F5]/20 border-[#429EBD]/30"}`}>
                   <p className={`text-xs ${theme === "dark" ? "text-slate-300" : "text-[#053F5C]"} mb-2 font-semibold`}>
@@ -392,7 +392,7 @@ function LoginPage({ onLogin, onBack }) {
         <div className={`absolute top-0 right-0 w-96 h-96 ${theme === "dark" ? "bg-emerald-500/20" : "bg-[#429EBD]/8"} rounded-full blur-3xl animate-float`} />
         <div className={`absolute bottom-0 left-0 w-80 h-80 ${theme === "dark" ? "bg-amber-500/20" : "bg-[#F7AD19]/8"} rounded-full blur-3xl animate-[float_8s_ease-in-out_infinite]`} />
         <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] ${theme === "dark" ? "bg-emerald-400/10" : "bg-[#9FE7F5]/6"} rounded-full blur-3xl animate-pulse-glow`} />
-        
+
         {/* خطوط متوهجة */}
         <div className={`absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent ${theme === "dark" ? "via-emerald-400/50" : "via-[#429EBD]/25"} to-transparent animate-pulse`} />
         <div className={`absolute bottom-0 right-0 w-full h-px bg-gradient-to-l from-transparent ${theme === "dark" ? "via-amber-400/50" : "via-[#F7AD19]/25"} to-transparent animate-pulse`} />
@@ -448,10 +448,10 @@ function LoginPage({ onLogin, onBack }) {
             <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${theme === "dark" ? "bg-emerald-500/10 border-emerald-500/20" : "bg-gradient-to-r from-[#9FE7F5]/40 to-[#E0F7FA]/30 border-[#429EBD]/40 shadow-sm"} border backdrop-blur-sm`}>
               <span className={`h-2 w-2 rounded-full ${theme === "dark" ? "bg-emerald-400" : "bg-[#429EBD]"} animate-pulse`} />
               <span className={`text-xs ${theme === "dark" ? "text-emerald-300" : "text-[#053F5C]"} font-bold`}>
-                {language === "ar" ? "منصة مركزية لإدارة المخزون والهدر" : "Central platform for inventory and waste management"}
+                {language === "ar" ? "  منصة مركزية لإدارة المخزون والهدر في المواد الغذائية " : "Central platform for inventory and waste management"}
               </span>
             </div>
-            
+
             <h1 className={`text-4xl font-bold leading-tight ${theme === "dark" ? textClass : "text-[#053F5C]"} tracking-tight`}>
               {language === "ar" ? "لوحة تحكم" : "Dashboard"}{" "}
               <span className="bg-gradient-to-r from-emerald-500 via-emerald-400 to-amber-400 bg-clip-text text-transparent font-extrabold">
@@ -459,9 +459,9 @@ function LoginPage({ onLogin, onBack }) {
               </span>{" "}
               {language === "ar" ? "لمتابعة الهدر الغذائي" : "for food waste monitoring"}
             </h1>
-            
+
             <p className={`text-base ${theme === "dark" ? subTextClass : "text-[#053F5C]"} leading-relaxed max-w-lg font-semibold`}>
-              {language === "ar" 
+              {language === "ar"
                 ? "راقب مستويات المخزون، تواريخ الصلاحية، والفاقد في المصانع والمخازن، مع تنبيهات مبكرة ولوحات مؤشرات مخصصة للإدارة العليا."
                 : "Monitor inventory levels, expiry dates, and waste in factories and warehouses, with early alerts and custom dashboards for senior management."}
             </p>
@@ -486,7 +486,7 @@ function LoginPage({ onLogin, onBack }) {
           <section className="relative w-full max-w-md mx-auto">
             {/* تأثير توهج خلف البطاقة */}
             <div className={`absolute -inset-1 bg-gradient-to-br ${theme === "dark" ? "from-emerald-400/50 via-amber-400/50 to-emerald-600/50" : "from-[#429EBD]/30 via-[#F7AD19]/30 to-[#429EBD]/30"} rounded-2xl blur-xl ${theme === "dark" ? "opacity-60" : "opacity-40"} animate-pulse-glow`} />
-            
+
             {/* البطاقة الرئيسية */}
             <div className={`relative rounded-2xl ${cardBgClass} border shadow-2xl p-8 transition-colors duration-300`}>
               <div className="mb-8">
@@ -543,7 +543,7 @@ function LoginPage({ onLogin, onBack }) {
                     >
                       {showIPSettings ? "إخفاء إعدادات الاتصال" : "إعدادات الاتصال"}
                     </button>
-                    
+
                     {showIPSettings && (
                       <div className={`p-4 rounded-lg border ${theme === "dark" ? "bg-slate-800/50 border-slate-700" : "bg-[#9FE7F5]/20 border-[#429EBD]/30"}`}>
                         <p className={`text-xs ${theme === "dark" ? "text-slate-300" : "text-[#053F5C]"} mb-3 font-semibold`}>

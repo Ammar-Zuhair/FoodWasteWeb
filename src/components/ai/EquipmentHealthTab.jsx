@@ -3,7 +3,7 @@ import { useTheme } from "../../contexts/ThemeContext.jsx";
 import { useLanguage } from "../../contexts/LanguageContext.jsx";
 import { getToken } from "../../utils/api/auth.js";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://srv1265534.hstgr.cloud:8000/api/v1";
+const API_BASE = import.meta.env.VITE_API_URL || "https://srv1265534.hstgr.cloud/api/v1";
 
 function EquipmentHealthTab() {
     const { theme } = useTheme();

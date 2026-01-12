@@ -44,7 +44,7 @@ function getApiBaseUrl() {
   }
 
   // For web development, use the hosted server
-  return 'http://srv1265534.hstgr.cloud:8000';
+  return 'https://srv1265534.hstgr.cloud';
 }
 
 function getLlamaUrl() {
@@ -58,7 +58,7 @@ function getLlamaUrl() {
     return apiUrl.replace(':8000', ':8001');
   }
 
-  return 'http://srv1265534.hstgr.cloud:8001';
+  return 'https://srv1265534.hstgr.cloud';
 }
 
 const API_BASE_URL = getApiBaseUrl();

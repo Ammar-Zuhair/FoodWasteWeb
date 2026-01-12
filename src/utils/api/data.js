@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://srv1265534.hstgr.cloud:8000/api/v1';
+const API_URL = import.meta.env.VITE_API_URL || 'https://srv1265534.hstgr.cloud/api/v1';
 
 export const getGovernorates = async () => {
     try {
