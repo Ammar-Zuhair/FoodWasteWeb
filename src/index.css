@@ -1,0 +1,441 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+/* خط Cairo - استخدام الخطوط المحلية أولاً */
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: local('Cairo'), 
+       local('Cairo-Regular'),
+       local('Segoe UI'),
+       local('Tahoma'),
+       local('Arial Unicode MS');
+}
+
+/* إعدادات عامة مع تحسينات للراحة البصرية */
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: "Cairo", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #0f172a; /* slate-950 default */
+  /* Remove any top padding/margin that could cause black space */
+  position: relative;
+  overflow-x: hidden;
+  overscroll-behavior-y: none; /* Prevent rubber-banding */
+}
+
+/* Ensure no black space at top for native apps */
+@supports (padding: env(safe-area-inset-top)) {
+  html {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    top: 0 !important;
+  }
+  body {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    top: 0 !important;
+    position: relative !important;
+  }
+  #root {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    top: 0 !important;
+  }
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Ensure Sidebar and Header stay fixed */
+#main-sidebar,
+#main-header {
+  position: fixed !important;
+  top: 0 !important;
+  z-index: 9999 !important;
+}
+
+#main-sidebar {
+  height: 100vh !important;
+  width: 16rem !important;
+}
+
+#main-header {
+  width: calc(100% - 16rem) !important;
+}
+
+/* Ensure parent containers don't interfere with fixed positioning */
+body,
+html,
+#root,
+div[class*="transition"] {
+  transform: none !important;
+  perspective: none !important;
+}
+
+/* Ensure fixed elements are not affected by parent transforms */
+#main-sidebar *,
+#main-header * {
+  transform: none !important;
+}
+
+/* Prevent body scroll when needed */
+body.fixed-layout {
+  overflow: hidden;
+}
+
+[data-theme="dark"] body {
+  color: #f1f5f9;
+  background-color: #0f172a;
+}
+
+[data-theme="light"] body {
+  color: #053F5C;
+  background-color: #F0FAFC;
+}
+
+/* #root already defined above */
+
+/* Safe Area Insets for Mobile Native Apps (APK) */
+/* Note: We handle safe areas in component level for better control */
+@supports (padding: max(0px)) {
+  /* Only apply horizontal safe areas to root */
+  #root {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  /* تطبيق Safe Area على العناصر الثابتة */
+  header, nav, footer {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+/* تحسينات للشاشات الصغيرة جداً (iPhone SE وأصغر) */
+@media (max-width: 375px) {
+  body {
+    font-size: 14px;
+  }
+  
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+  
+  button, a {
+    min-height: 48px; /* زيادة حجم الهدف للمس */
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* تحسينات للشاشات المتوسطة */
+@media (min-width: 375px) and (max-width: 640px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+/* تحسينات للشاشات الكبيرة */
+@media (min-width: 640px) and (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  body {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    overscroll-behavior: none; /* Prevents pull-to-refresh on mobile */
+  }
+  
+  input, textarea, select {
+    -webkit-user-select: text;
+    user-select: text;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  button, a {
+    -webkit-tap-highlight-color: rgba(66, 158, 189, 0.2);
+    touch-action: manipulation; /* Improves touch responsiveness */
+    min-height: 44px; /* Minimum touch target size */
+  }
+  
+  /* Smooth scrolling for mobile */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent text size adjustment on orientation change */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+/* تحسين Safe Area Insets لجميع الأجهزة */
+@supports (padding: max(0px)) {
+  /* تطبيق Safe Area على جميع العناصر الثابتة */
+  header, nav, footer {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  
+  /* تطبيق Safe Area على المحتوى */
+  main {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* تحسين الخطوط للوضوح على جميع الأجهزة */
+@media (max-width: 768px) {
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* تحسين قراءة النصوص الصغيرة */
+  .text-xs {
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  
+  .text-sm {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}
+
+/* تحسين التمرير على الموبايل */
+@media (max-width: 768px) {
+  * {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* إزالة scrollbar على الموبايل */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+  }
+}
+
+/* تحسينات للشاشات العريضة (Landscape) */
+@media (max-width: 768px) and (orientation: landscape) {
+  header {
+    height: 3.5rem;
+    min-height: 3.5rem;
+  }
+  
+  main {
+    padding-top: calc(3.5rem + 0.5rem);
+  }
+}
+
+/* تحسين الأداء على الأجهزة الضعيفة */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* تحسينات الخطوط للوضوح */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+p {
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+/* تحسين التباين للنصوص */
+[data-theme="light"] {
+  --text-primary: #053F5C;
+  --text-secondary: #429EBD;
+  --text-muted: #6B7280;
+}
+
+[data-theme="dark"] {
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+}
+
+/* أنيميشن مخصصة */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-slide-in {
+  animation: slide-in 0.6s ease-out;
+}
+
+@keyframes fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px) scale(0.98);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+
+/* تحسينات للراحة البصرية */
+input, textarea, select {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+button {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* Print Styles */
+@media print {
+  @page {
+    size: A4;
+    margin: 1.5cm;
+  }
+
+  body {
+    background: white !important;
+    color: #000 !important;
+  }
+
+  /* إخفاء العناصر غير الضرورية */
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  /* إظهار العناصر المخصصة للطباعة */
+  .print\\:block {
+    display: block !important;
+  }
+
+  /* تحسين الألوان للطباعة */
+  * {
+    background: white !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* تحسين الجداول */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  table th,
+  table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  table th {
+    background-color: #f5f5f5 !important;
+    font-weight: bold;
+  }
+
+  /* تحسين الرسوم البيانية */
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* تحسين التباعد */
+  .space-y-6 > * + * {
+    margin-top: 1.5rem;
+  }
+
+  /* إزالة الخلفيات الشفافة */
+  .backdrop-blur-xl {
+    backdrop-filter: none;
+  }
+
+  /* تحسين الخطوط */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    color: #000 !important;
+  }
+
+  /* منع كسر الصفحة داخل العناصر */
+  .rounded-xl,
+  .border {
+    page-break-inside: avoid;
+  }
+
+  /* تحسين الألوان في الرسوم البيانية */
+  .recharts-wrapper {
+    background: white !important;
+  }
+}

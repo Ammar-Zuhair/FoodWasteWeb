@@ -1,0 +1,28 @@
+{
+  "appId": "com.hsa.foodwaste",
+  "appName": "HSA Food Waste Platform",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "hostname": "localhost",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "launchAutoHide": true,
+      "backgroundColor": "#053F5C",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "backgroundColor": "#0f172a",
+      "style": "dark",
+      "overlaysWebView": true
+    }
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

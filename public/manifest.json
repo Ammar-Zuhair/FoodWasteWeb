@@ -1,0 +1,39 @@
+{
+  "name": "HSA Food Waste Reduction System",
+  "short_name": "HSA Platform",
+  "description": "منصة تقليل الهدر الغذائي - HSA Group",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#053F5C",
+  "theme_color": "#429EBD",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "لوحة التحكم",
+      "short_name": "Dashboard",
+      "description": "لوحة التحكم الرئيسية",
+      "url": "/dashboard",
+      "icons": [{ "src": "/logo.jpg", "sizes": "192x192" }]
+    }
+  ]
+}
+
+
+
+
